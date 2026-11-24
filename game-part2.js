@@ -1,8 +1,14 @@
 'use strict';
+        // Fake glow (additive sprite). A real PointLight added/removed at runtime forces every lit material in the scene to recompile = a big hitch.
+        let _pgTex = null;
+        function pickupGlowSprite() {
+            if (!_pgTex) { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'), gr = x.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,190,90,.9)'); gr.addColorStop(.35, 'rgba(255,160,60,.35)'); gr.addColorStop(1, 'rgba(255,140,40,0)'); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); _pgTex = new THREE.CanvasTexture(c); }
+            const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: _pgTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false })); s.scale.set(2.2, 2.2, 1); return s;
+        }
         function spawnShotgunPickup(x, z) {
             if (GameState.shotgunSpawnedInWorld || GameState.hasShotgun) return;
             const pickupGroup = new THREE.Group(), gm = buildItemModel('shotgun'); gm.scale.setScalar(1.3); gm.rotation.y = Math.PI / 2; pickupGroup.add(gm);
-            const glow = new THREE.PointLight(0xffaa33, 1.4, 5);
+            const glow = pickupGlowSprite();
             glow.position.set(0, 0.4, 0);
 
             pickupGroup.add(glow);
@@ -38,7 +44,7 @@
         // Level builds are synchronous and heavy: paint a LOADING cover first so the click doesn't look like a browser freeze.
         function loadLevelDeferred(i) {
             const o = document.getElementById('level-loading'); if (o) o.style.display = 'flex';
-            requestAnimationFrame(() => setTimeout(() => { try { buildLevel(i, true); } finally { if (o) o.style.display = 'none'; } }, 30));
+            requestAnimationFrame(() => setTimeout(() => { let ok = false; try { GameState.onWarm = () => { if (o) o.style.display = 'none'; }; setTimeout(() => { if (o) o.style.display = 'none'; }, 7000); buildLevel(i, true); ok = true; } finally { if (!ok && o) o.style.display = 'none'; } }, 30));
         }
         function nextMainLevel(i) { for (let j = i + 1; j < LevelData.length; j++) { const l = LevelData[j]; if (!l.party && (!l.hidden || l.main) && !l.sub) return j; } return -1; }
         function placeSubEntrance(data, cs, exitCell) {
@@ -293,11 +299,11 @@
 
         function selectGraphicsPreset(presetId) {
             if (window.__vrOn && (presetId === 'rtx' || presetId === 'custom')) presetId = 'high';
-            GameState.graphicsPreset = presetId;
+            GameState.graphicsPreset = presetId; const _ts = GameState.graphics.texSize;
             if (presetId !== 'custom' && GraphicsPresets[presetId]) {
                 GameState.graphics = { ...GraphicsPresets[presetId] };
             }
-            TextureGen.clearCache();
+            if (GameState.graphics.texSize !== _ts) TextureGen.clearCache(); // regenerating every canvas texture is only needed when their size changed
             applyGraphicsSettings();
             updateSettingsSummary();
         }

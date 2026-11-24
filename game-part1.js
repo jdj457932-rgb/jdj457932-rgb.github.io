@@ -2179,6 +2179,46 @@
         pathTraceBounceLight.position.set(0, 0.2, -0.5);
         camera.add(pathTraceBounceLight);
 
+        // ===== LAG FIX: stable light state =====
+        // three.js bakes the NUMBER of visible lights / shadow casters into every lit material's shader. Toggling flashLight.visible therefore
+        // recompiled every material in the scene the first time you pressed F. The flashlight is now ALWAYS a visible light as far as the
+        // renderer is concerned; "off" is rendered as intensity 0 with its shadow pass skipped. Game code keeps reading/writing .visible as before.
+        const FLG = { vis: true, rendering: false, hold: false, holdT: 0, warmDone: null };
+        Object.defineProperty(flashLight, 'visible', { configurable: true, enumerable: true, get() { return FLG.rendering ? true : FLG.vis; }, set(v) { FLG.vis = !!v; } });
+        {
+            const _render = renderer.render.bind(renderer);
+            renderer.render = function (s, c) {
+                if (s !== scene) return _render(s, c);
+                if (FLG.hold) { if (performance.now() - FLG.holdT < 6000) return; FLG.hold = false; } // freeze the last frame while shaders compile off-thread (6 s safety valve)
+                if (GameState._needWarm) { GameState._needWarm = false; if (startWarmHold()) return; }
+                const off = !FLG.vis, I = flashLight.intensity; FLG.rendering = true;
+                if (off) flashLight.intensity = 0;
+                const sh = flashLight.shadow; if (sh) sh.autoUpdate = !off;
+                try { return _render(s, c); } finally { FLG.rendering = false; if (off) flashLight.intensity = I; }
+            };
+        }
+        // Compile every material in the freshly built scene (plus a hidden set of items / ghost materials) with the REAL light state before the first frame is drawn.
+        function startWarmHold() {
+            if (typeof renderer.compileAsync !== 'function' || !GameState.isRunning && !GameState.inShop && !GameState.debugRoom) { const f = GameState.onWarm; GameState.onWarm = null; if (f) f(); return false; }
+            FLG.hold = true; FLG.holdT = performance.now();
+            const g = new THREE.Group(); g.position.set(0, -80, 0);
+            try { warmExtras(g); } catch (e) {}
+            scene.add(g);
+            const fin = () => { try { scene.remove(g); g.traverse(o => { if (o.geometry && o.geometry.dispose && !o.userData.keepGeo) o.geometry.dispose(); }); } catch (e) {} FLG.hold = false; const f = GameState.onWarm; GameState.onWarm = null; if (f) f(); };
+            let doneOnce = false; const once = () => { if (doneOnce) return; doneOnce = true; fin(); };
+            try { renderer.compileAsync(scene, camera).then(once, once); } catch (e) { once(); }
+            setTimeout(once, 5500);
+            return true;
+        }
+        // Things whose shader variants would otherwise compile the first time they appear in play: ghost (transparent) avatars/corpses, item and chest models.
+        function warmExtras(g) {
+            const T = { transparent: true, opacity: 0.38, roughness: 0.7, depthWrite: false };
+            [{ color: 0x3a3328 }, { color: 0xd9c3a0 }].forEach(o => { const m = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), new THREE.MeshStandardMaterial(Object.assign({ emissive: 0x2a4a88 }, T, o))); g.add(m); });
+            [...new Set([...Object.keys(FLOOR_Y), 'axe', 'crowbar', 'tracker', 'chest_locator'])].forEach(id => { try { g.add(buildItemModel(id)); } catch (e) {} });
+            try { g.add(buildChestModel().group); g.add(buildCrateModel(1.1)); } catch (e) {}
+            if (typeof pickupGlowSprite === 'function') { try { g.add(pickupGlowSprite()); } catch (e) {} }
+        }
+
         // Apply Graphics Settings Dynamically to Renderer, Shadows, Reflections & Lighting
         function applyGraphicsSettings() {
             if (!renderer || webglContextLost) return;
@@ -2234,6 +2274,8 @@
             // 6. VHS Scanline Overlay
             { const _v = gfx.vhsFx === 'on' || window.realMode === true; document.getElementById('vhs-scanlines').style.display = _v ? 'block' : 'none'; document.body.classList.toggle('vhs-on', _v); }
             if (window.menuGfxHook) { try { window.menuGfxHook(); } catch (e) {} }
+            if (renderer.__gfxReady) GameState._needWarm = true; // changed tone mapping / lights / shadows: recompile off-thread, then resume drawing
+            renderer.__gfxReady = true;
         }
 
         // ===== Shared item models: the SAME model is used on the floor, when dropped, and in your hand =====
@@ -3657,7 +3699,8 @@
         }
 
         // --- LEVEL BUILDER WITH CEILING LIGHTS, REFLECTIONS & SHOTGUN SPAWNS ---
-        function buildLevel(levelIdx, shopMode = false) { // multiplayer: every client builds the same level from a shared seed (more players = more loot)
+        function buildLevel(levelIdx, shopMode = false) { const r = _buildLevelOuter(levelIdx, shopMode); GameState._needWarm = true; return r; }
+        function _buildLevelOuter(levelIdx, shopMode = false) { // multiplayer: every client builds the same level from a shared seed (more players = more loot)
             if (!MP.active) return _buildLevelInner(levelIdx, shopMode);
             const sd = MP.seedFor(levelIdx); MP.prepLoot(true);
             try { mpWithSeed(sd, () => _buildLevelInner(levelIdx, shopMode)); } finally { MP.prepLoot(false); }
