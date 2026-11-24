@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<!--
+=========================== ASSET TABLE ===========================
+Every audio name, character name, animation name and file name used by the build.
+(Audio rows with a base64 blob in AUDIO[...] never need a file. When every row has one, the Load Sound Files button is replaced by the code: lsf455)
+
+## AUDIO NAMES
+name                   | base64 slot                     | file                              | kind    
+-----------------------+---------------------------------+-----------------------------------+---------
+coin                   | AUDIO["coin"]                   | sounds/coin.ogg                   | one-shot
+reload                 | AUDIO["reload"]                 | sounds/reload.ogg                 | one-shot
+drink                  | AUDIO["drink"]                  | sounds/drink.ogg                  | one-shot
+battery_use            | AUDIO["battery_use"]            | sounds/battery_use.ogg            | one-shot
+monster_spot           | AUDIO["monster_spot"]           | sounds/monster_spot.ogg           | one-shot
+cake_eat               | AUDIO["cake_eat"]               | sounds/cake_eat.ogg               | one-shot
+level_clear            | AUDIO["level_clear"]            | sounds/level_clear.ogg            | one-shot
+secret_item            | AUDIO["secret_item"]            | sounds/secret_item.ogg            | one-shot
+shell_pickup           | AUDIO["shell_pickup"]           | sounds/shell_pickup.ogg           | one-shot
+ammo_pickup            | AUDIO["ammo_pickup"]            | sounds/ammo_pickup.ogg            | one-shot
+shotgun_empty          | AUDIO["shotgun_empty"]          | sounds/shotgun_empty.ogg          | one-shot
+drop                   | AUDIO["drop"]                   | sounds/drop.ogg                   | one-shot
+step_carpet            | AUDIO["step_carpet"]            | sounds/step_carpet.ogg            | aux     
+step_concrete          | AUDIO["step_concrete"]          | sounds/step_concrete.ogg          | aux     
+step_hotel             | AUDIO["step_hotel"]             | sounds/step_hotel.ogg             | aux     
+step_party             | AUDIO["step_party"]             | sounds/step_party.ogg             | aux     
+ambience_lobby         | AUDIO["ambience_lobby"]         | sounds/ambience_lobby.ogg         | loop    
+ambience_habitable     | AUDIO["ambience_habitable"]     | sounds/ambience_habitable.ogg     | loop    
+ambience_pipes         | AUDIO["ambience_pipes"]         | sounds/ambience_pipes.ogg         | loop    
+ambience_electrical    | AUDIO["ambience_electrical"]    | sounds/ambience_electrical.ogg    | loop    
+ambience_office        | AUDIO["ambience_office"]        | sounds/ambience_office.ogg        | loop    
+ambience_hotel         | AUDIO["ambience_hotel"]         | sounds/ambience_hotel.ogg         | loop    
+ambience_dark          | AUDIO["ambience_dark"]          | sounds/ambience_dark.ogg          | loop    
+ambience_party         | AUDIO["ambience_party"]         | sounds/ambience_party.ogg         | loop    
+drip                   | AUDIO["drip"]                   | sounds/drip.ogg                   | one-shot
+ui_hover               | AUDIO["ui_hover"]               | sounds/ui_hover.ogg               | one-shot
+fake_burst             | AUDIO["fake_burst"]             | sounds/fake_burst.ogg             | one-shot
+leviathan              | AUDIO["leviathan"]              | sounds/leviathan.ogg              | one-shot
+hum                    | AUDIO["hum"]                    | sounds/hum.ogg                    | loop    
+shop_radio             | AUDIO["shop_radio"]             | sounds/shop_radio.ogg             | loop    
+vhs_hiss               | AUDIO["vhs_hiss"]               | sounds/vhs_hiss.ogg               | loop    
+vhs_glitch             | AUDIO["vhs_glitch"]             | sounds/vhs_glitch.ogg             | aux     
+clock_wind             | AUDIO["clock_wind"]             | sounds/clock_wind.ogg             | one-shot
+alarm_clock            | AUDIO["alarm_clock"]            | sounds/alarm_clock.ogg            | one-shot
+table_throw            | AUDIO["table_throw"]            | sounds/table_throw.ogg            | one-shot
+table_smash            | AUDIO["table_smash"]            | sounds/table_smash.ogg            | one-shot
+chase_music            | AUDIO["chase_music"]            | sounds/chase_music.ogg            | loop    
+ambience               | AUDIO["ambience"]               | sounds/ambience.ogg               | loop    
+click                  | AUDIO["click"]                  | sounds/click.ogg                  | one-shot
+pickup                 | AUDIO["pickup"]                 | sounds/pickup.ogg                 | one-shot
+ping                   | AUDIO["ping"]                   | sounds/ping.ogg                   | one-shot
+shotgun                | AUDIO["shotgun"]                | sounds/shotgun.ogg                | one-shot
+second_chance          | AUDIO["second_chance"]          | sounds/second_chance.ogg          | one-shot
+spark                  | AUDIO["spark"]                  | sounds/spark.ogg                  | one-shot
+jumpscare              | AUDIO["jumpscare"]              | sounds/jumpscare.ogg              | one-shot
+stinger                | AUDIO["stinger"]                | sounds/chase_stinger.ogg          | one-shot
+step                   | AUDIO["step"]                   | sounds/step.ogg                   | one-shot
+heartbeat              | AUDIO["heartbeat"]              | sounds/heartbeat.ogg              | one-shot
+monster_bacteria       | AUDIO["monster_bacteria"]       | sounds/monster_bacteria.ogg       | one-shot
+monster_skinstealer    | AUDIO["monster_skinstealer"]    | sounds/monster_skinstealer.ogg    | one-shot
+monster_smiler         | AUDIO["monster_smiler"]         | sounds/monster_smiler.ogg         | one-shot
+monster_hound          | AUDIO["monster_hound"]          | sounds/monster_hound.ogg          | one-shot
+monster_window_watcher | AUDIO["monster_window_watcher"] | sounds/monster_window_watcher.ogg | one-shot
+
+## CHARACTER NAMES
+name           | where                 | notes                                        
+---------------+-----------------------+----------------------------------------------
+bacteria       | Entity / rig          | Bacteria (menu main)                         
+skinstealer    | Entity / rig          | Skin Stealer                                 
+smiler         | Entity / rig          | Smiler                                       
+hound          | Entity / rig          | Hound                                        
+window_watcher | Entity / rig          | Window Watcher                               
+fake_partygoer | Party-level decoy     | Looks like partygoer, bursts into skinstealer
+partygoer      | Party decor           | Dancing partygoer                            
+shopkeeper     | Shop NPC              | Pre-level shop room                          
+tiny_creature  | Scare (not an entity) | Deep-pool darting thing                      
+leviathan      | Scenery (Level 7)     | Giants drifting under Thalassophobia         
+
+## ANIMATION NAMES
+name      | type  | notes                          
+----------+-------+--------------------------------
+idle      | clip  | walk fallback                  
+walk      | clip  | sprint/idle fallback           
+sprint    | clip  | aliases: run, chase            
+stunned   | clip  | alias: stun                    
+jumpscare | clip  | sprint/walk fallback           
+menupose  | clip  | alias: menu; plays on main menu
+freeze    | alias | -> idle                        
+
+## FILE NAMES
+sounds/alarm_clock.ogg
+sounds/ambience.ogg
+sounds/ambience_dark.ogg
+sounds/ambience_electrical.ogg
+sounds/ambience_habitable.ogg
+sounds/ambience_hotel.ogg
+sounds/ambience_lobby.ogg
+sounds/ambience_office.ogg
+sounds/ambience_party.ogg
+sounds/ambience_pipes.ogg
+sounds/ammo_pickup.ogg
+sounds/battery_use.ogg
+sounds/cake_eat.ogg
+sounds/chase_music.ogg
+sounds/chase_stinger.ogg
+sounds/click.ogg
+sounds/clock_wind.ogg
+sounds/coin.ogg
+sounds/drink.ogg
+sounds/drip.ogg
+sounds/drop.ogg
+sounds/fake_burst.ogg
+sounds/heartbeat.ogg
+sounds/hum.ogg
+sounds/jumpscare.ogg
+sounds/level_clear.ogg
+sounds/leviathan.ogg
+sounds/monster_bacteria.ogg
+sounds/monster_hound.ogg
+sounds/monster_skinstealer.ogg
+sounds/monster_smiler.ogg
+sounds/monster_spot.ogg
+sounds/monster_window_watcher.ogg
+sounds/pickup.ogg
+sounds/ping.ogg
+sounds/reload.ogg
+sounds/second_chance.ogg
+sounds/secret_item.ogg
+sounds/shell_pickup.ogg
+sounds/shop_radio.ogg
+sounds/shotgun.ogg
+sounds/shotgun_empty.ogg
+sounds/spark.ogg
+sounds/step.ogg
+sounds/step_carpet.ogg
+sounds/step_concrete.ogg
+sounds/step_hotel.ogg
+sounds/step_party.ogg
+sounds/table_smash.ogg
+sounds/table_throw.ogg
+sounds/ui_hover.ogg
+sounds/vhs_glitch.ogg
+sounds/vhs_hiss.ogg
+
+## CODES
+qwerty (in game) -> Poolrooms | abyss7 (in game) -> Level 7 | lol999 (in game) | LMAO111 (pause menu) +5 coins | LMAO999 (pause menu) secret Reality Shard | PPP999 (pause menu) +250 coins, one-time | lsf455 (main menu or pause menu) -> sound files menu
+===================================================================
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>The Backrooms - Survival Horror</title>
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* boot screen: inline so the black screen + button paint before anything else is requested */
+        #boot { position: fixed; inset: 0; z-index: 2147483647; background: #000; color: #e6c84c; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; text-align: center; transition: opacity .5s; }
+        #boot.out { opacity: 0; pointer-events: none; }
+        #boot-btn { background: transparent; color: #e6c84c; border: 2px solid #e6c84c; padding: 16px 44px; font: bold 20px 'Courier New', monospace; letter-spacing: 4px; cursor: pointer; }
+        #boot-btn:hover, #boot-btn:focus-visible { background: #e6c84c; color: #000; outline: none; }
+        #boot-wrap { width: min(420px, 80vw); height: 10px; border: 1px solid rgba(230,200,76,.6); display: none; }
+        #boot-bar { height: 100%; width: 0; background: #e6c84c; transition: width .15s; }
+        #boot-msg { font-size: 13px; min-height: 2.6em; opacity: .8; max-width: 80vw; }
+        #boot.err #boot-msg { color: #ff6a5a; opacity: 1; }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="boot"><button id="boot-btn" autofocus>LOAD</button><div id="boot-wrap"><div id="boot-bar"></div></div><div id="boot-msg"></div></div>
+    <div id="start-screen">
+        <h1>THE BACKROOMS</h1>
+        <p class="subtitle">A procedural survival horror experience.</p>
+        <div id="beta-badge">v0.8.0 BETA &middot; NOT A FINISHED GAME</div><div id="menu-tip"></div>
+
+        <div id="achievement-banner">
+            &#9733; ACHIEVEMENT UNLOCKED: <strong>BEYOND THE THRESHOLD</strong> &mdash; Survived Impossible Mode!
+        </div>
+
+        <div id="active-config-summary">
+            DIFFICULTY: <strong id="summary-diff" style="color:#e6c84c;">NORMAL</strong> &nbsp;|&nbsp; GRAPHICS: <strong id="summary-gfx" style="color:#e6c84c;">MEDIUM</strong> &nbsp;|&nbsp; MIC: <strong id="summary-mic" style="color:#888;">OFF</strong>
+        </div>
+
+        <div class="menu-btn-row">
+            <button id="start-btn" class="menu-btn primary">ENTER THE BACKROOMS</button>
+            <button id="mp-btn" class="menu-btn primary">MULTIPLAYER</button>
+            <button id="settings-btn" class="menu-btn">SETTINGS</button>
+            <button id="ach-btn" class="menu-btn">ACHIEVEMENTS</button>
+            <button id="snd-btn" class="menu-btn">LOAD SOUND FILES</button>
+            <button id="upd-btn" class="menu-btn">UPDATE LOG</button>
+            <input type="file" id="sfx-file" multiple accept="audio/*,.ogg,.mp3,.wav" style="display:none">
+        </div>
+
+        <div class="controls-info">
+            WASD: Move &nbsp;|&nbsp; SHIFT: Sprint &nbsp;|&nbsp; MOUSE: Look<br>
+            F: Toggle Flashlight &nbsp;|&nbsp; E: Interact / Pick Up &nbsp;|&nbsp; LEFT CLICK / G: Fire Shotgun (Extreme)<br>
+            <i>Stay in the light. Watch your noise. Find the exit.</i>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal">
+        <div class="settings-card">
+            <h2>SETTINGS</h2>
+            
+            <div class="settings-section" id="diff-section">
+                <label class="section-title">DIFFICULTY LEVEL</label>
+                <div class="diff-grid" id="diff-selector">
+                    <button class="diff-btn" data-diff="easy">EASY</button>
+                    <button class="diff-btn active" data-diff="normal">NORMAL</button>
+                    <button class="diff-btn" data-diff="hard">HARD</button>
+                    <button class="diff-btn" data-diff="extreme">EXTREME</button>
+                    <button class="diff-btn" data-diff="impossible">IMPOSSIBLE</button>
+                </div>
+                <div id="diff-description"></div>
+            </div>
+
+            <div class="settings-section" id="perma-section">
+                <label class="section-title">PERMANENT UPGRADES</label>
+                <div class="mic-option-box">
+                    <label class="checkbox-row"><input type="checkbox" id="perma-off"> <span>Disable ALL permanent upgrades</span></label>
+                    <p class="mic-desc">Turns every upgrade bought in the shop's PERMANENT tab off (you keep owning them). Clearing a level on Impossible with them disabled pays 250 coins instead of 75. Locked during a run.</p>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="gfx-header-row">
+                    <label class="section-title" style="margin-bottom:0;">GRAPHICS & RENDER ENGINE</label>
+                    <button id="diagnose-btn" class="diagnose-btn" type="button">&#9881; DIAGNOSE HARDWARE</button>
+                </div>
+                <div id="diagnose-report"></div>
+                <div class="gfx-grid" id="gfx-selector">
+                    <button class="gfx-btn" data-gfx="potato">POTATO</button>
+                    <button class="gfx-btn" data-gfx="low">LOW</button>
+                    <button class="gfx-btn active" data-gfx="medium">MEDIUM</button>
+                    <button class="gfx-btn" data-gfx="high">HIGH</button>
+                    <button class="gfx-btn" data-gfx="rtx">RTX</button>
+                    <button class="gfx-btn" data-gfx="custom">CUSTOM</button>
+                </div>
+                <div id="gfx-description"></div>
+                <div id="custom-gfx-panel">
+                    <div class="gfx-control-item">
+                        <span>Render Resolution Scale</span>
+                        <select id="gfx-opt-res">
+                            <option value="0.45">45% (Ultra Performance / Potato)</option>
+                            <option value="0.7">70% (Performance)</option>
+                            <option value="1.0" selected>100% (Native)</option>
+                            <option value="1.5">150% (Supersampled)</option>
+                            <option value="2.0">200% (4K DLAA / Native Max)</option>
+                        </select>
+                    </div>
+                    <div class="gfx-control-item">
+                        <span>Anti-Aliasing & Post-Processing</span>
+                        <select id="gfx-opt-aa">
+                            <option value="off">Off (Aliased / Raw)</option>
+                            <option value="standard" selected>Standard FXAA / Tone</option>
+                            <option value="filmic">ACES Filmic + High Precision</option>
+                        </select>
+                    </div>
+                    <div class="gfx-control-item">
+                        <span>Shadow Map Resolution</span>
+                        <select id="gfx-opt-shadows">
+                            <option value="0">Off (No Dynamic Shadows)</option>
+                            <option value="512">512px (Low)</option>
+                            <option value="1024" selected>1024px (Medium)</option>
+                            <option value="2048">2048px (High Soft Shadows)</option>
+                            <option value="4096">4096px (Ultra Max PCFSoft)</option>
+                        </select>
+                    </div>
+                    <div class="gfx-control-item">
+                        <span>Texture & Anisotropic Detail</span>
+                        <select id="gfx-opt-tex">
+                            <option value="128">128px (Blurry / Low VRAM)</option>
+                            <option value="256">256px (Low)</option>
+                            <option value="512" selected>512px (Standard)</option>
+                            <option value="1024">1024px (High 8x Aniso)</option>
+                            <option value="2048">2048px (Ultra 16x Aniso)</option>
+                        </select>
+                    </div>
+                    <div class="gfx-control-item">
+                        <span>Reflections Engine</span>
+                        <select id="gfx-opt-reflections">
+                            <option value="off">Off (Matte Surfaces)</option>
+                            <option value="env" selected>PMREM Environment + Roughness</option>
+                            <option value="planar">Full Real-Time Planar Ray Reflections</option>
+                        </select>
+                    </div>
+                    <div class="gfx-control-item">
+                        <span>Ray / Path Tracing & Lighting</span>
+                        <select id="gfx-opt-rt">
+                            <option value="off">Standard Baked + Flashlight</option>
+                            <option value="point" selected>Dynamic Ceiling Point Lights (16)</option>
+                            <option value="raytracing">Hardware-Style Ray Tracing (32 Lights + Shadows)</option>
+                            <option value="pathtracing">Full Path Tracing GI (Multi-Bounce + Volumetrics)</option>
+                        </select>
+                    </div>
+                    <div class="gfx-control-item">
+                        <span>Ceiling Light Fixture Density</span>
+                        <select id="gfx-opt-lights">
+                            <option value="0">Minimal (Flashlight Only)</option>
+                            <option value="8">Sparse (8 Active Lights)</option>
+                            <option value="16" selected>Standard (16 Active Lights)</option>
+                            <option value="32">Dense (32 Active Lights)</option>
+                            <option value="64">Maximum (64 Active Lights)</option>
+                        </select>
+                    </div>
+                    <div class="gfx-control-item">
+                        <span>VHS Scanlines & Post FX</span>
+                        <select id="gfx-opt-vhs">
+                            <option value="off">Off (Clean Viewport)</option>
+                            <option value="on" selected>Enabled (1989 Camcorder Overlay)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section" id="real-section">
+                <label class="section-title">REALISM</label>
+                <div class="mic-option-box"><label class="checkbox-row"><input type="checkbox" id="real-cb"> <span>Real: camera at your torso, no HUD except the camcorder, VHS effects forced (sound is not)</span></label></div>
+                <div class="mic-option-box"><label class="checkbox-row"><input type="checkbox" id="nm-cb"> <span>Nightmare: no chase warnings (no chase music, effects or sound), entity footsteps 50% quieter, fog always pitch-black. Chases themselves are unchanged.</span></label></div>
+            </div>
+
+            <div class="settings-section" id="ctl-section">
+                <label class="section-title">CONTROLS</label>
+                <div class="mic-option-box vol-grid"><span>Mouse sensitivity</span><input type="range" class="vol" id="sens-slider" min="5" max="60" step="1"><b id="sens-v"></b></div>
+            </div>
+            <div class="settings-section" id="fx-section">
+                <label class="section-title">SCREEN EFFECTS (CONFIG)</label>
+                <div class="mic-option-box">
+                    <label class="checkbox-row"><input type="checkbox" id="fx-sn"> <span>Static noise (tape hiss + glitch audio)</span></label>
+                    <label class="checkbox-row"><input type="checkbox" id="fx-st"> <span>Static effect (low-sanity static overlay)</span></label>
+                    <label class="checkbox-row"><input type="checkbox" id="fx-tv"> <span>Old TV effect (CRT glow, rolling bar, tracking glitch)</span></label>
+                    <label class="checkbox-row"><input type="checkbox" id="fx-vhs"> <span>VHS effect (scanlines + film grain)</span></label>
+                </div>
+            </div>
+
+            <div class="settings-section" id="vol-section">
+                <label class="section-title">VOLUME</label>
+                <div class="mic-option-box vol-grid">
+                    <span>Master</span><input type="range" class="vol" id="vol-master" min="0" max="100"><b id="vol-master-v"></b>
+                    <span>Music</span><input type="range" class="vol" id="vol-music" min="0" max="100"><b id="vol-music-v"></b>
+                    <span>Jumpscare</span><input type="range" class="vol" id="vol-jump" min="0" max="100"><b id="vol-jump-v"></b>
+                    <span>SFX</span><input type="range" class="vol" id="vol-sfx" min="0" max="100"><b id="vol-sfx-v"></b>
+                </div>
+            </div>
+
+            <div class="settings-section" id="mic-section">
+                <label class="section-title">AUDIO & MICROPHONE</label>
+                <div class="mic-option-box">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="mic-checkbox">
+                        <span>Enable Microphone Input (Voice Attraction)</span>
+                    </label>
+                    <p class="mic-desc">
+                        Your real-world microphone will be monitored during gameplay. The louder you speak, breathe, or scream, the farther entities hear you and the more entities are attracted to your location.
+                    </p>
+                    <div id="settings-mic-meter-wrap">
+                        <div id="settings-mic-meter-bg"><div id="settings-mic-meter-fill"></div></div>
+                        <div id="settings-mic-status">Checking microphone...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: right; margin-top: 10px;">
+                <button id="close-settings-btn" class="menu-btn primary" style="padding: 10px 22px; font-size: 15px;">SAVE & CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="shop-screen"><div class="shop-wrap">
+        <h2>THE STRANGE SHOP</h2>
+        <div class="keeper"><div class="body"></div><div class="head"><div class="eye l"></div><div class="eye r"></div><div class="smile"></div></div></div>
+        <div class="shop-quote" id="shop-quote"></div>
+        <div style="color:#ffd54a;font-size:16px;">COINS: <strong id="shop-coins">0</strong></div>
+        <div class="shop-tabs"><button class="shop-tab active" data-tab="stock">STOCK</button><button class="shop-tab" data-tab="perma">PERMANENT</button></div>
+        <div class="shop-note" id="shop-note"></div>
+        <div class="shop-cards" id="shop-cards"></div>
+        <div class="menu-btn-row"><button class="menu-btn" id="shop-back-btn">BACK</button><button class="menu-btn primary" id="shop-go-btn">ENTER LEVEL 0</button></div>
+        <div class="controls-info">Stock is fixed per run: leaving and returning will not reroll it. Purchases are delivered to your inventory when the run starts.</div>
+    </div></div>
+    <div id="ach-modal"><div class="shop-wrap"><h2>ACHIEVEMENTS</h2><div id="ach-list"></div><br><button class="menu-btn primary" id="ach-close-btn">CLOSE</button></div></div>
+    <div id="dbg-hud"><div id="dbg-hint">DEBUG ROOM &middot; WASD move &middot; SHIFT run &middot; E interact &middot; click to capture mouse &middot; gallery is to the east</div><div id="dbg-prompt"></div></div>
+    <div class="dbg-modal" id="dbg-level-panel"><div class="dbg-card"><h3>LEVEL SELECT</h3><div id="dbg-level-list" class="diff-grid" style="grid-template-columns:1fr;"></div><button class="menu-btn" id="dbg-level-close">CLOSE</button></div></div>
+    <div class="dbg-modal" id="dbg-audio-panel"><div class="dbg-card"><h3>AUDIO TEST</h3><select id="dbg-sound-list" size="12"></select>
+        <div style="margin:10px 0">VOLUME <input type="range" id="dbg-vol" min="0" max="100" value="90"> <span id="dbg-now" style="color:#9fe8b0"></span></div>
+        <button class="menu-btn" id="dbg-play">PLAY</button> <button class="menu-btn" id="dbg-stop">STOP</button> <button class="menu-btn" id="dbg-audio-close">CLOSE</button></div></div>
+    <div class="dbg-modal" id="sfx-panel"><div class="dbg-card"><h3>SFX TEST</h3><div id="sfx-prog" style="margin-bottom:8px;color:#e6c84c"></div><div id="sfx-log"></div><br><button class="menu-btn" id="sfx-pick">LOAD SOUND FILES</button> <button class="menu-btn" id="sfx-run">RUN AGAIN</button> <button class="menu-btn" id="sfx-close">CLOSE</button></div></div>
+    <div class="dbg-modal" id="upd-panel"><div class="dbg-card upd"><h3>UPDATE LOG</h3><div class="map-intro">This game is an unfinished beta. Things will change, break and get added.</div>
+        <h4>v0.8.0 BETA (current)</h4><ul>
+        <li>Level 9: Haven (creator-made). A suburb under a fake dome where night falls every 30 seconds and the eyes come. Houses are safe, but the residents are not.</li>
+        <li>Multiplayer: up to 6 players (PC and VR together) via room codes, a shared waiting room, host migration, voice + text chat, ghosts and revives, shared exits, and per-player shops and loot.</li>
+        <li>Offloaded asset loading: when served over http(s), audio, rigs and animations are loaded after the page itself, one at a time, from the parent folders (audio / rigs / animations) or from an assets.txt. Opened as a file, the embedded base64 is used as before.</li>
+        <li>Bacteria: the freeze is now a random ability that needs a bacteriaability animation; touching it is a normal jumpscare. Fixed the lag spike when pressing Next Level.</li></ul>
+        <h4>v0.7.0 BETA</h4><ul>
+        <li>VR mode with physical item interactions, plus two-handed shotguns with recoil, visible bullet paths and muzzle flashes. Fixed VR crate/chest collision sizing and the QWERTY debug-room teleport in VR.</li>
+        <li>Loot chests with randomized loot pools, breakable crates opened with crowbars, and the Chest Locator. Chest/crate spawn rates were retuned and rare floor loot was added.</li>
+        <li>Sub-levels (0.2, 1.5) are now secret branches: they are only reachable through hidden, hard-to-spot entrances in dead ends, not as the normal next level. Their exits rejoin the main path.</li>
+        <li>Thalassophobia reworked into an open ocean (dark rock, sea stacks, depth layers, light shafts). The Leviathan now hunts swimmers and can kill. Electrical Station lag fixes and general performance improvements.</li></ul>
+        <h4>v0.6.0 BETA</h4><ul>
+        <li>Alarm clocks ring once. Being jumpscared, dying or pausing silences them.</li>
+        <li>Master, music, jumpscare and SFX volume sliders. Every setting now saves between sessions.</li>
+        <li>Monsters turn at a limited speed instead of snapping to face you (Smilers too).</li>
+        <li>Chases no longer flicker on and off. You stay hunted while anything is still tracking your last known position.</li>
+        <li>Smilers drain sanity much more slowly.</li>
+        <li>New rounded HUD, plus film grain, tracking glitches, a rolling bar, CRT glow and a very quiet tape hiss.</li></ul>
+        <h4>v0.5.0 BETA</h4><ul>
+        <li>Smarter monsters: they chase your last known position, hear footsteps and loud noises (not footsteps on Easy), investigate sounds, and wander for real.</li>
+        <li>Only one monster hunts you at a time, and only one lurks near you.</li>
+        <li>Textures now have embossed patterns and depth. Random furniture and clutter appear in levels.</li>
+        <li>Party tables are hiding spots. Partygoers that see you duck under will smash the table.</li>
+        <li>Alarm clocks can appear in any level. Wind one up, throw it, and every monster sprints to it. Holding it is a bad idea.</li>
+        <li>Main menu monsters are easier to see.</li></ul>
+        <h4>v0.4.0 BETA</h4><ul>
+        <li>All monster models upgraded: glowing pulsing eyes, tendrils, bone claws, spine spikes and extra watching eyes, all of which get more frantic while they hunt you.</li>
+        <li>Chases now hit harder: a heartbeat-tempo red pulse, thicker pulsing fog, camera shake and an FOV kick.</li>
+        <li>A new secret is out there somewhere.</li></ul>
+        <h4>v0.3.1 BETA</h4><ul>
+        <li>Party Room (BETA) now has arcade cabinets with a tiny endless platformer. Playing restores sanity, but you are NOT safe while playing.</li>
+        <li>Aggressive partygoers now roam the Party Room, and it is more tightly packed.</li>
+        <li>Smilers rebuilt: bright floating grins that always face you, red/cyan 3D-glasses fringe, and they fade in out of the dark.</li>
+        <li>Shotguns no longer vanish. They stay in your inventory unloaded. Find shotgun shells to reload; a rare AMMO CRATE refills every shotgun with 2 shots.</li>
+        <li>Press Q to drop the selected item.</li>
+        <li>Every area now has its own ambience and footstep sound slots (see LOAD SOUND FILES).</li>
+        <li>Textures: stains, scratches and edge grime added across the whole game.</li></ul>
+        <h4>v0.3.0 BETA</h4><ul>
+        <li>Added the Party Room (BETA): party walls, floors, tables and dancing partygoers, not available by normal means yet.</li>
+        <li>Party Cakes spawn only in the Party Room. [E] takes one, [C] eats it. Heals a hit, or grants one extra hit at full health.</li>
+        <li>Textures: fine grain added. Main menu: entities lurk behind the Bacteria, flickering title, tips, update log.</li></ul>
+        <br><button class="menu-btn primary" id="upd-close">CLOSE</button></div></div>
+    <div id="chase-pulse" style="position:absolute;inset:0;pointer-events:none;z-index:9;opacity:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(200,0,0,.55) 100%)"></div>
+    <div class="dbg-modal" id="lol-panel"><div class="dbg-card"><h3>INVENTORY EDITOR</h3><div class="map-intro">Set any slot to any item in the game, released or not.</div><div id="lol-rows"></div><br><button class="menu-btn primary" id="lol-close">CLOSE</button></div></div>
+    <div class="dbg-modal" id="sfx-map-panel"><div class="dbg-card"><h3>SOUND FILE MAPPING</h3>
+        <div class="map-intro" id="map-intro"></div>
+        <div class="map-toolbar"><button class="menu-btn" id="map-add">ADD FILES (AUTO-MATCH BY NAME)</button><button class="menu-btn" id="map-reset">RESET ALL</button><button class="menu-btn" id="map-export" title="Export your own mapped files as base64 lines for the AUDIO table">EXPORT AS BASE64</button><span id="map-pool"></span><span id="map-export-msg"></span></div>
+        <div id="map-list"></div><div id="map-locked" class="map-locked"></div><br>
+        <button class="menu-btn primary" id="map-close">CLOSE</button>
+        <input type="file" id="sfx-one-file" accept="audio/*,.ogg,.mp3,.wav" style="display:none"></div></div>
+    <div class="dbg-modal" id="mp-menu"><div class="dbg-card"><h3>MULTIPLAYER</h3>
+        <div class="map-intro">Host a room or join one with its room code. Up to 6 players, PC and VR together.</div>
+        <button class="menu-btn primary" id="mp-open-join">JOIN ROOM</button>
+        <button class="menu-btn primary" id="mp-open-create">CREATE ROOM</button>
+        <button class="menu-btn" id="mp-menu-back">BACK</button></div></div>
+    <div class="dbg-modal" id="mp-join"><div class="dbg-card"><h3>JOIN ROOM</h3>
+        <div class="map-intro">Enter the room code the host gave you.</div>
+        <input type="text" id="mp-join-code" maxlength="20" placeholder="ROOM CODE" autocomplete="off" spellcheck="false" data-vrkb="1" data-label="ROOM CODE">
+        <div class="map-err" id="mp-join-msg"></div>
+        <button class="menu-btn primary" id="mp-join-go">JOIN</button>
+        <button class="menu-btn" id="mp-join-back">BACK</button></div></div>
+    <div class="dbg-modal" id="mp-create"><div class="dbg-card"><h3>CREATE ROOM</h3>
+        <input type="text" id="mp-create-code" maxlength="20" placeholder="CUSTOM ROOM CODE (BLANK = RANDOM)" autocomplete="off" spellcheck="false" data-vrkb="1" data-label="CUSTOM CODE">
+        <label><input type="checkbox" id="mp-allow-join" checked> ALLOW JOINING</label>
+        <label><input type="checkbox" id="mp-beta"> INCLUDE BETA LEVELS (THALASSOPHOBIA, PARTYROOMS, POOLROOMS)</label>
+        <div class="map-intro">Max 6 players including you. Leave the code blank for a random 5-6 letter code.</div>
+        <div class="map-err" id="mp-create-msg"></div>
+        <button class="menu-btn primary" id="mp-create-go">CREATE</button>
+        <button class="menu-btn" id="mp-create-back">BACK</button></div></div>
+    <div class="dbg-modal" id="mp-room"><div class="dbg-card"><h3>ROOM <span id="mp-room-code"></span></h3>
+        <div id="mp-room-players"></div>
+        <div class="map-intro" id="mp-room-diff"></div>
+        <label><input type="checkbox" id="mp-set-join"> ALLOW JOINING</label>
+        <label><input type="checkbox" id="mp-set-beta"> INCLUDE BETA LEVELS</label>
+        <label><input type="checkbox" id="mp-set-hear"> ENTITIES CAN HEAR PLAYERS' VOICES</label>
+        <div class="map-intro" id="mp-room-note"></div>
+        <input type="text" id="mp-name" maxlength="16" placeholder="NAMETAG" autocomplete="off" spellcheck="false" data-vrkb="1" data-label="NAMETAG">
+        <button class="menu-btn" id="mp-name-rand">RANDOM NAMETAG</button>
+        <button class="menu-btn" id="mp-mic-btn">MICROPHONE: ON</button>
+        <button class="menu-btn" id="mp-room-chat">TEXT CHAT</button>
+        <button class="menu-btn primary" id="mp-room-close">CLOSE</button>
+        <button class="menu-btn" id="mp-room-leave">LEAVE ROOM</button></div></div>
+    <div class="dbg-modal" id="mp-chat-panel"><div class="dbg-card"><h3>TEXT CHAT</h3>
+        <div id="mp-chat-log"></div>
+        <input type="text" id="mp-chat-input" maxlength="120" placeholder="MESSAGE" autocomplete="off" spellcheck="false" data-vrkb="1" data-label="MESSAGE" data-submit="mp-chat-send" data-keep="1">
+        <button class="menu-btn primary" id="mp-chat-send">SEND</button>
+        <button class="menu-btn" id="mp-chat-close">CLOSE</button></div></div>
+    <div id="mp-feed"></div><div id="mp-hud"></div>
+    <div id="mp-chatbar"><input type="text" id="mp-chatbar-in" maxlength="120" placeholder="Say something to the room... (Enter = send, Esc = cancel)" autocomplete="off" spellcheck="false"></div>
+    <div id="pause-menu">
+        <div class="pause-card">
+            <h2>PAUSED</h2>
+            <button class="menu-btn primary" id="pause-resume-btn">RESUME</button>
+            <button class="menu-btn" id="pause-gfx-btn">GRAPHICS SETTINGS</button>
+            <button class="menu-btn" id="pause-fps-btn">FPS DISPLAY: OFF</button>
+            <button class="menu-btn" id="pause-sfx-btn">SFX TEST</button>
+            <div id="pause-mp-row" style="display:none;flex-direction:column;gap:10px"><button class="menu-btn" id="pause-room-btn">ROOM / SETTINGS / NAMETAG</button><button class="menu-btn" id="pause-chat-btn">TEXT CHAT</button><button class="menu-btn" id="pause-vote-btn">VOTE TO END RUN</button></div>
+            <button class="menu-btn" id="pause-menu-btn">MAIN MENU</button>
+            <div class="code-row"><input id="code-input" type="text" maxlength="24" placeholder="ENTER CODE" autocomplete="off" spellcheck="false"><button class="menu-btn" id="code-btn">REDEEM</button></div><div id="code-msg"></div><div id="code-echo"></div>
+            <button class="menu-btn" id="code-fix-btn" type="button">FIX TEXT: OFF</button><div class="code-fix-note">Only if you cannot see your typing</div>
+            <div class="pause-note">Difficulty, microphone and permanent-upgrade toggle are locked during a run.</div>
+        </div>
+    </div>
+    <div id="fps-display"></div>
+    <div id="level-loading" style="display:none;position:fixed;inset:0;z-index:1500;background:#000;color:#e6c84c;font:bold 22px 'Courier New',monospace;letter-spacing:4px;align-items:center;justify-content:center;pointer-events:none">LOADING LEVEL...</div>
+    <div id="boss-hud"><div id="boss-name">THE RINGMASTER</div><div id="boss-bar"><div id="boss-fill"></div></div></div>
+    <div id="creator-notice"><div class="cn-box"><p>This level is creator-made. If you wanted an actual Backrooms Level, press the button below to go to Poolrooms before it is released.</p><div class="cn-row"><button id="cn-pool" class="menu-btn">Go to Poolrooms</button><button id="cn-go" class="menu-btn">Continue</button></div></div></div>
+    <div id="death-screen">
+        <h1 id="end-title">YOU CLIPPED OUT</h1>
+        <p id="survival-time" style="font-size: 18px; color: #ddd;"></p>
+        <div id="end-achievement-card">
+            <div style="font-size: 16px; font-weight: bold; margin-bottom: 6px;">&#9733; ACHIEVEMENT UNLOCKED: BEYOND THE THRESHOLD &#9733;</div>
+            <div style="font-size: 13px; color: #ffeaa7;">Official Proof of Victory: Completed all 9 Backrooms levels on IMPOSSIBLE difficulty.</div>
+            <div id="achievement-proof-code" style="font-size: 11px; color: #bbb; margin-top: 6px;"></div>
+        </div>
+        <div class="menu-btn-row" style="margin-top: 20px;">
+            <button id="restart-btn" class="menu-btn" style="border-color: #f00;">RESTART</button>
+            <button id="menu-btn" class="menu-btn">MAIN MENU</button>
+        </div>
+    </div>
+
+    <div id="ui-layer">
+        <div id="crosshair"></div>
+        <div id="level-text">Level 0: The Lobby</div>
+        <div id="objective-text">Find the glitching wall to escape.</div>
+        <div id="difficulty-hud-badge">MODE: NORMAL</div>
+        <div id="lives-hud">CHANCES REMAINING: 2</div>
+        <div id="shotgun-hud">[LEFT CLICK / G] PUMP SHOTGUN READY (1 SHELL)</div>
+        
+        <div id="mic-container" class="bar-container"><div id="mic-bar" class="bar-fill"></div></div>
+        <div id="mic-label" class="hud-text">MIC NOISE</div>
+
+        <div id="stamina-container" class="bar-container"><div id="stamina-bar" class="bar-fill"></div></div>
+        <div class="hud-text" style="bottom: 58px;">STAMINA</div>
+        
+        <div id="sanity-container" class="bar-container"><div id="sanity-bar" class="bar-fill"></div></div>
+        <div class="hud-text" style="bottom: 38px;">SANITY</div>
+        
+        <div id="battery-container" class="bar-container"><div id="battery-bar" class="bar-fill"></div></div>
+        <div class="hud-text" style="bottom: 18px;">BATTERY</div>
+
+        <div id="inv-hud"></div>
+        <div id="interaction-prompt">[E] Collect</div>
+        <div id="event-banner"></div>
+
+        <div id="exit-arrow-container">
+            <svg id="exit-arrow-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 6L52 34H39V58H25V34H12L32 6Z" fill="#44ff88" stroke="#0a331a" stroke-width="3"/>
+            </svg>
+            <div id="exit-arrow-label">EXIT SIGNAL (5.0s)</div>
+        </div>
+    </div>
+
+    <div id="static-overlay"></div>
+    <div id="vignette"></div>
+    <div id="chase-border"></div>
+    <div id="jumpscare-flash"></div>
+    <div id="muzzle-flash-overlay"></div>
+    <div id="vhs-scanlines"></div>
+    <canvas id="vhs-grain" width="160" height="90"></canvas><div id="vhs-roll"></div><div id="crt-glow"></div>
+    <div id="vhs-hud">
+        <div id="vhs-rec"><span id="vhs-rec-dot"></span>REC</div>
+        <div id="vhs-play">PLAY &#9658; &nbsp; SP</div>
+        <div id="vhs-bottom-right">
+            <div id="vhs-timer">00:00:00</div>
+            <div>MAY 14 1989</div>
+        </div>
+    </div>
+
+<script>
+/* Loader: download everything first (nothing executes), then run it. Order of events:
+   1) fetch css-independent assets in parallel with retries: PeerJS, Three.js modules, game-part1/2.js, assets.txt (if present)
+   2) modulepreload the Three.js modules (fetched + parsed, not run), hash the game scripts, compare with the saved build record
+   3) run PeerJS, Three.js glue, game-part1.js, game-part2.js in order  ->  game starts
+   4) keep the boot screen until the game's own audio/model loader (ASSETS) finishes, then reveal the main menu */
+(() => {
+    'use strict';
+    const V = 'https://cdn.jsdelivr.net/npm/three@0.160.0/';
+    const URLS = { peer: 'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js', p1: 'game-part1.js', p2: 'game-part2.js' };
+    const MODS = [V + 'build/three.module.js', V + 'examples/jsm/controls/PointerLockControls.js', V + 'examples/jsm/objects/Reflector.js'];
+    const BUILD_KEY = 'backrooms_build', CACHE = 'backrooms-build-cache';
+    const $ = id => document.getElementById(id), boot = $('boot'), btn = $('boot-btn'), bar = $('boot-bar'), msg = $('boot-msg'), wrap = $('boot-wrap');
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    let started = false, lastErr = '';
+    window.addEventListener('error', e => { lastErr = e.message + (e.filename ? ' (' + e.filename.split('/').pop() + ':' + e.lineno + ')' : ''); });
+    window.addEventListener('unhandledrejection', e => { lastErr = String(e.reason && e.reason.message || e.reason); });
+
+    // ---- progress: every file has a weight and reports a 0..1 fraction ----
+    const prog = {}; let totalW = 0;
+    const setFile = (k, w) => { prog[k] = { w, f: 0 }; totalW += w; };
+    const render = (text) => { let s = 0; for (const k in prog) s += prog[k].w * prog[k].f; bar.style.width = Math.min(100, s / totalW * 100).toFixed(1) + '%'; if (text) msg.textContent = text; };
+
+    // fetch with streaming progress, timeout and retries (3 tries, backoff)
+    async function get(key, url, as, opt) {
+        let err;
+        for (let i = 0; i < 3; i++) {
+            const ac = new AbortController(), t = setTimeout(() => ac.abort(), 45000);
+            try {
+                const r = await fetch(url, Object.assign({ signal: ac.signal }, opt));
+                if (!r.ok) throw new Error(url + ' -> HTTP ' + r.status);
+                if (as === 'optional' && /text\/html/i.test(r.headers.get('content-type') || '')) { prog[key].f = 1; return null; } // server answered a missing file with a page
+                const len = +r.headers.get('content-length') || 0, rd = r.body.getReader(), chunks = []; let got = 0;
+                for (;;) { const { done, value } = await rd.read(); if (done) break; chunks.push(value); got += value.length; if (len) { prog[key].f = Math.min(0.98, got / len); render(); } }
+                clearTimeout(t); prog[key].f = 1; render();
+                const blob = new Blob(chunks);
+                return as === 'buf' ? blob.arrayBuffer() : blob.text();
+            } catch (e) { err = e; clearTimeout(t); await sleep(400 * (i + 1) * (i + 1)); }
+        }
+        throw err;
+    }
+
+    // ---- build id: SHA-256 of the game scripts (FNV-1a fallback on insecure origins) ----
+    async function digest(str) {
+        if (window.crypto && crypto.subtle) { const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)); return 'sha256:' + [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, '0')).join(''); }
+        let a = 0xdeadbeef ^ str.length, b = 0x41c6ce57; for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); a = Math.imul(a ^ c, 2654435761); b = Math.imul(b ^ c, 1597334677); }
+        return 'fnv:' + ((b >>> 0).toString(16).padStart(8, '0') + (a >>> 0).toString(16).padStart(8, '0'));
+    }
+    const readBuild = () => { try { return JSON.parse(localStorage.getItem(BUILD_KEY)) || null; } catch (e) { return null; } };
+    async function cachePut(sha, files) { try { await caches.delete(CACHE); const c = await caches.open(CACHE); for (const n in files) await c.put('/__build/' + sha + '/' + n, new Response(files[n], { headers: { 'content-type': 'text/javascript' } })); } catch (e) {} }
+    async function cacheGet(sha) { try { const c = await caches.open(CACHE), o = {}; for (const n of ['p1', 'p2']) { const r = await c.match('/__build/' + sha + '/' + n); if (!r) return null; o[n] = await r.text(); } return o; } catch (e) { return null; } }
+
+    const modulepreload = href => new Promise(res => { const l = document.createElement('link'); l.rel = 'modulepreload'; l.href = href; l.onload = l.onerror = () => res(); document.head.appendChild(l); setTimeout(res, 15000); });
+    const run = (name, text) => { const s = document.createElement('script'); s.text = text + '\n//# sourceURL=' + name; document.head.appendChild(s); s.remove(); };
+
+    async function go() {
+        if (started) return; started = true; lastErr = '';
+        btn.style.display = 'none'; wrap.style.display = 'block'; boot.classList.remove('err');
+        try {
+            // 1) download everything, nothing runs yet
+            for (const k of ['peer', 'p1', 'p2']) setFile(k, k === 'peer' ? 2 : 4);
+            MODS.forEach((m, i) => setFile('m' + i, i ? 1 : 3)); setFile('assets', 1);
+            render('Downloading game files...');
+            const saved = readBuild(), fresh = { cache: 'no-cache' }; // revalidate: unchanged scripts come back as a cheap 304
+            let src = {}; let offline = false;
+            const jobs = [
+                get('peer', URLS.peer, 'text').then(t => src.peer = t),
+                get('p1', URLS.p1, 'text', fresh).then(t => src.p1 = t),
+                get('p2', URLS.p2, 'text', fresh).then(t => src.p2 = t),
+                ...MODS.map((m, i) => get('m' + i, m, 'buf').catch(() => { prog['m' + i].f = 1; })), // warms the HTTP cache; modulepreload below is the real load
+                get('assets', 'assets.txt', 'optional').then(t => { src.assetsBytes = t ? t.length : 0; }).catch(() => { prog.assets.f = 1; })
+            ];
+            try { await Promise.all(jobs); }
+            catch (e) { // network failed: fall back to the last saved build if one exists
+                const c = saved && await cacheGet(saved.sha);
+                if (!c || !src.peer) throw e;
+                src.p1 = c.p1; src.p2 = c.p2; offline = true;
+            }
+            // 2) compile-ahead for the Three.js modules (fetched + parsed, not executed), then check the saved build
+            render('Preparing...'); await Promise.all(MODS.map(modulepreload));
+            const sha = await digest(src.p1 + '\n' + src.p2);
+            const same = !!saved && saved.sha === sha;
+            if (!same && !offline) { await cachePut(sha, { p1: src.p1, p2: src.p2 }); }
+            try { localStorage.setItem(BUILD_KEY, JSON.stringify({ sha, bytes: src.p1.length + src.p2.length, at: Date.now(), files: ['game-part1.js', 'game-part2.js'] })); } catch (e) {}
+            console.log('[boot] build ' + sha.slice(0, 18) + '... ' + (same ? 'matches the saved build' : 'is new (saved)') + (offline ? ' [offline: used saved copy]' : ''));
+            // 3) run everything, in order
+            render('Starting...');
+            run('peerjs.min.js', src.peer);
+            const [T, P, R] = await Promise.all([import('three'), import('three/addons/controls/PointerLockControls.js'), import('three/addons/objects/Reflector.js')]);
+            Object.assign(globalThis, { THREE: T, PointerLockControls: P.PointerLockControls, Reflector: R.Reflector });
+            lastErr = ''; run('game-part1.js', src.p1); if (lastErr) throw new Error(lastErr);
+            run('game-part2.js', src.p2); if (lastErr) throw new Error(lastErr);
+            // 4) the game's own audio / model loader: hold the boot screen until it is done (max 20 s)
+            const t0 = performance.now();
+            while (typeof ASSETS !== 'undefined' && ASSETS.server && !(ASSETS.audioDone && ASSETS.rigsDone) && performance.now() - t0 < 20000) {
+                const s = ASSETS.stat; bar.style.width = Math.min(99, 90 + (performance.now() - t0) / 2000) + '%';
+                msg.textContent = 'Loading sounds and models... (' + s.audio + ' sounds, ' + s.rigs + ' models)'; await sleep(100);
+            }
+            bar.style.width = '100%'; boot.classList.add('out'); setTimeout(() => boot.remove(), 600);
+        } catch (e) {
+            console.error('[boot]', e); started = false; boot.classList.add('err');
+            msg.textContent = 'Load failed: ' + (e && e.message || e) + (lastErr && lastErr !== (e && e.message) ? ' / ' + lastErr : '');
+            btn.textContent = 'RETRY'; btn.style.display = ''; wrap.style.display = 'none';
+            btn.onclick = () => location.reload(); // a half-run game cannot be restarted cleanly, so a reload is the safe retry
+        }
+    }
+    btn.addEventListener('click', go);
+})();
+</script>
+</body>
+</html>
