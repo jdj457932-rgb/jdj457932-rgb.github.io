@@ -1890,11 +1890,28 @@
                 const i = GameState.inv.findIndex(x => x && x.id === 'clock'); if (i >= 0) invRemoveOne(i); }, 500);
         });
         { const _ps = AudioSys.playStep; AudioSys.playStep = (...a) => { _ps(...a); if (GameState.isRunning) makeNoise(controls.getObject().position, 12, false); }; const _sg = AudioSys.playShotgun; AudioSys.playShotgun = (...a) => { _sg(...a); if (GameState.isRunning) makeNoise(controls.getObject().position, 55, true); }; }
-        { const _E = _BaseEntity = Entity; Entity = class extends _E { constructor(ty, x, z) { super(ty, x, z); try { smilerPlane(this); } catch (er) {} try { rigMeasure(this); } catch (er) {} try { enhanceEntity(this); } catch (er) {} try { rigAttach(this); } catch (er) {} }
+        // Rare pink Bacteria (1 in 10 that spawn; never the main-menu one). A gentle colour/emissive shift on every material of the model: no new meshes, textures or lights,
+        // and a cloned material has the same shader parameters, so nothing recompiles. Procedural models own their materials (tinted in place); custom rigs share them between
+        // clones, so those get per-entity copies. Applies to the generated model and to GLB rigs alike.
+        const PINK_HUE = new THREE.Color(0xff6fb5); let _noPink = false;
+        function pinkTint(root, cloneMats, skip) {
+            const seen = new Map();
+            root.traverse(o => {
+                if (skip && skip(o)) return; const m0 = o.material; if (!m0) return;
+                const tint = m => { if (!m || !m.color) return m; let n = seen.get(m); if (!n) { n = cloneMats ? m.clone() : m; seen.set(m, n); n.color.lerp(PINK_HUE, 0.3); if (n.emissive) n.emissive.lerp(PINK_HUE, 0.07); } return n; };
+                o.material = Array.isArray(m0) ? m0.map(tint) : tint(m0);
+            });
+        }
+        function pinkRoll(e) {
+            if (_noPink || e.type !== 'bacteria' || Math.random() >= 0.1) return;
+            e._pink = true; pinkTint(e.mesh, false, o => o === e.stunRing || (e.stunRing && o.parent === e.stunRing));
+        }
+        { const _E = _BaseEntity = Entity; Entity = class extends _E { constructor(ty, x, z) { super(ty, x, z); try { smilerPlane(this); } catch (er) {} try { rigMeasure(this); } catch (er) {} try { enhanceEntity(this); } catch (er) {} try { rigAttach(this); } catch (er) {} try { pinkRoll(this); } catch (er) {} }
             hasLineOfSight(pp) { if (GameState.hidden && !this.hideTarget) return false; return super.hasLineOfSight(pp); }
             update(dt, pp) { const prev = this.state, los = this.hasLineOfSight(pp); if (los && prev === 'chase') { this.lastKnown = pp.clone(); } super.update(dt, pp); this._s0 = this.state; try { aiExtra(this, dt, pp, prev, los); animEntity(this); } catch (er) {} try { trackHunt(this, dt); } catch (er) {} } }; }
         let menuEnt = null, menuMouse = 0, menuLastT = 0, menuBack = [];
         function initMenuScene() { // a sealed, lit-up Level 0 room nobody can reach: every entity standing in it
+            _noPink = true; // the menu Bacteria is never pink
             try {
                 menuEnt = new Entity('bacteria', 0, 0); scene.remove(menuEnt.mesh); GameState.entities = [];
                 const m = menuEnt.mesh; m.position.set(2.4, 0, 0); m.scale.setScalar(1.4); menuScene.add(m);
@@ -1933,7 +1950,7 @@
                     GameState.menuMats.forEach(x => { x.envMapIntensity = g.reflections === 'off' ? 0 : 1.2; x.roughness = g.reflections === 'off' ? 0.95 : 0.7; x.needsUpdate = true; });
                 };
                 window.menuGfxHook();
-            } catch (e) { menuEnt = null; }
+            } catch (e) { menuEnt = null; } finally { _noPink = false; }
         }
         function menuVisible() { return menuEnt && document.getElementById('start-screen').style.display !== 'none' && document.getElementById('shop-screen').style.display !== 'flex'; }
         function renderMenu(t) {

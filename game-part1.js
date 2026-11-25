@@ -223,6 +223,7 @@
             e.mesh.add(holder);
             const mixer = new THREE.AnimationMixer(root), actions = {}; for (const [k, c] of Object.entries(lib.clips)) actions[k] = mixer.clipAction(c);
             e._rig = { e, holder, mixer, actions, cur: null, curKey: null, frozen: false }; RIG_LIST.add(e._rig); rigStartLoop();
+            if (e._pink && typeof pinkTint === 'function') { try { pinkTint(root, true); } catch (er) {} } // pink Bacteria: the custom rig gets the same tint (on per-entity material copies)
         }
         function rigPick(r) { // which animation should this entity be playing right now
             const e = r.e, p = e.mesh.parent;
